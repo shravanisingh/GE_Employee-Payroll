@@ -1,7 +1,8 @@
+// EmployeePayrollData.java
 public class EmployeePayrollData {
-    int id;
-    String name;
-    double salary;
+    private int id;
+    private String name;
+    private double salary;
 
     // Constructor
     public EmployeePayrollData(int id, String name, double salary) {
@@ -14,5 +15,31 @@ public class EmployeePayrollData {
     @Override
     public String toString() {
         return "ID: " + id + ", Name: " + name + ", Salary: " + salary;
+    }
+
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    // Setters (Optional for immutability; can be excluded if not needed)
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
