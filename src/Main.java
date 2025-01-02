@@ -4,54 +4,49 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        // Create some test EmployeePayrollData objects
-        EmployeePayrollData emp1 = new EmployeePayrollData(1, "John Doe", 50000);
-        EmployeePayrollData emp2 = new EmployeePayrollData(2, "Jane Smith", 60000);
-        EmployeePayrollData emp3 = new EmployeePayrollData(3, "Bob Brown", 45000);
+        // Use the correct path to the file
+        String filename = "src/employeePayroll.txt"; // Adjust based on your folder structure
 
-        // Store these objects in a list
-        List<EmployeePayrollData> employeeList = new ArrayList<>();
-        employeeList.add(emp1);
-        employeeList.add(emp2);
-        employeeList.add(emp3);
+        // Check if the file exists
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("File does not exist: " + filename);
+            return; // Exit if file does not exist
+        }
 
-        // Write Employee Payroll to a file
-        String filename = "employeePayroll.txt";
-        writeEmployeePayrollToFile(employeeList, filename);
+        // Read Employee Payroll Data from the file and load it into the list
+        List<EmployeePayrollData> employeeList = readEmployeePayrollFromFile(filename);
 
-        // Show the number of entries in the file
-        showNumberOfEntriesInFile(filename);
-    }
+        // Perform analysis on the data
+        if (!employeeList.isEmpty()) {
+            System.out.println("\nEmployee Payroll Data:");
+            employeeList.forEach(System.out::println);
 
-    // Method to write employee payroll data to a file
-    private static void writeEmployeePayrollToFile(List<EmployeePayrollData> employeeList, String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (EmployeePayrollData employee : employeeList) {
-                writer.write(employee.toString());
-                writer.newLine();
-            }
-            System.out.println("Employee payroll data written to file successfully.");
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+            // Perform analysis (e.g., count employees)
+            System.out.println("\nTotal number of employees: " + employeeList.size());
+        } else {
+            System.out.println("No data found in the file.");
         }
     }
 
-    // Method to count and show the number of entries in the file
-    private static void showNumberOfEntriesInFile(String filename) {
-        int entryCount = countFileEntries(filename);
-        System.out.println("\nNumber of entries in the file: " + entryCount);
-    }
-
-    // Method to count the number of entries in the file
-    private static int countFileEntries(String filename) {
-        int lineCount = 0;
+    // Method to read employee payroll data from a file
+    private static List<EmployeePayrollData> readEmployeePayrollFromFile(String filename) {
+        List<EmployeePayrollData> employeeList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            while (reader.readLine() != null) {
-                lineCount++;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Split the string to get id, name, and salary
+                String[] employeeData = line.split(", ");
+                int id = Integer.parseInt(employeeData[0].split(": ")[1]);
+                String name = employeeData[1].split(": ")[1];
+                double salary = Double.parseDouble(employeeData[2].split(": ")[1]);
+
+                // Add the employee data to the list
+                employeeList.add(new EmployeePayrollData(id, name, salary));
             }
         } catch (IOException e) {
             System.err.println("Error reading from file: " + e.getMessage());
         }
-        return lineCount;
+        return employeeList;
     }
 }
