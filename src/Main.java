@@ -19,11 +19,8 @@ public class Main {
         String filename = "employeePayroll.txt";
         writeEmployeePayrollToFile(employeeList, filename);
 
-        // Print the employee payroll entries from the file
-        printEmployeePayrollFromFile(filename);
-
-        // Count the number of entries in the file to ensure the operation worked
-        countFileEntries(filename);
+        // Show the number of entries in the file
+        showNumberOfEntriesInFile(filename);
     }
 
     // Method to write employee payroll data to a file
@@ -39,29 +36,22 @@ public class Main {
         }
     }
 
-    // Method to print employee payroll data from a file
-    private static void printEmployeePayrollFromFile(String filename) {
-        System.out.println("\nPrinting Employee Payroll Data from File:\n");
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from file: " + e.getMessage());
-        }
+    // Method to count and show the number of entries in the file
+    private static void showNumberOfEntriesInFile(String filename) {
+        int entryCount = countFileEntries(filename);
+        System.out.println("\nNumber of entries in the file: " + entryCount);
     }
 
     // Method to count the number of entries in the file
-    private static void countFileEntries(String filename) {
+    private static int countFileEntries(String filename) {
+        int lineCount = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            int lineCount = 0;
             while (reader.readLine() != null) {
                 lineCount++;
             }
-            System.out.println("\nNumber of entries in the file: " + lineCount);
         } catch (IOException e) {
             System.err.println("Error reading from file: " + e.getMessage());
         }
+        return lineCount;
     }
 }
